@@ -51,7 +51,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe()
                 .tokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1)) // defaults to 2 weeks
-                .key("somethingverysecured");  // The key is important here – it is a private value secret for the entire application and it will be used when generating the contents of the token.
+                .key("somethingverysecured")  // The key is important here – it is a private value secret for the entire application and it will be used when generating the contents of the token.
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
+                .logoutSuccessUrl("/login");
     }
 
     @Override
