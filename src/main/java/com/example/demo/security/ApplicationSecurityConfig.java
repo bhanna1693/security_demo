@@ -3,6 +3,7 @@ package com.example.demo.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.example.demo.security.ApplicationUserPermission.*;
 import static com.example.demo.security.ApplicationUserRole.*;
 
 @Configuration
@@ -32,6 +34,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/**").hasRole(USER.name())
+                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(FAMILY_WRITE.name())
+                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(FAMILY_WRITE.name())
+                .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(FAMILY_WRITE.name())
+                .antMatchers(HttpMethod.GET, "/management/api/**").hasAnyRole(ADMIN.name(), ADMIN_TRAINEE.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -44,19 +50,22 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails brainSmithUser = User.builder()
                 .username("briansmith")
                 .password(passwordEncoder.encode("password"))
-                .roles(USER.name())  // ROLE_USER
+//                .roles(USER.name())  // ROLE_USER
+                .authorities(USER.getGrantedAuthorities())
                 .build();
 
         UserDetails sueSmithUser = User.builder()
                 .username("susansmith")
                 .password(passwordEncoder.encode("password123"))
-                .roles(ADMIN.name())  // ROLE_ADMIN
+//                .roles(ADMIN.name())  // ROLE_ADMIN
+                .authorities(ADMIN.getGrantedAuthorities())
                 .build();
 
         UserDetails shawnSmithUser = User.builder()
                 .username("shawnsmith")
                 .password(passwordEncoder.encode("password123"))
-                .roles(ADMIN_TRAINEE.name())  // ROLE_ADMIN_TRAINEE
+//                .roles(ADMIN_TRAINEE.name())  // ROLE_ADMIN_TRAINEE
+                .authorities(ADMIN_TRAINEE.getGrantedAuthorities())
                 .build();
 
         return new InMemoryUserDetailsManager(
