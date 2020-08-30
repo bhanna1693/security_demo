@@ -29,8 +29,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*")
-                .permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/api/**").hasRole(MY_USER.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -43,7 +43,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails brainSmithUser = User.builder()
                 .username("briansmith")
                 .password(passwordEncoder.encode("password"))
-                .roles(MEMBER.name())  // ROLE_MEMBER
+                .roles(MY_USER.name())  // ROLE_USER
                 .build();
 
         UserDetails sueSmithUser = User.builder()
@@ -52,9 +52,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles(ADMIN.name())  // ROLE_ADMIN
                 .build();
 
+        UserDetails shawnSmithUser = User.builder()
+                .username("shawnsmith")
+                .password(passwordEncoder.encode("password123"))
+                .roles(ADMIN_TRAINEE.name())  // ROLE_ADMIN_TRAINEE
+                .build();
+
         return new InMemoryUserDetailsManager(
                 brainSmithUser,
-                sueSmithUser
+                sueSmithUser,
+                shawnSmithUser
         );
     }
 }
