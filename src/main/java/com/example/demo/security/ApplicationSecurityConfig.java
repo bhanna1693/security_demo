@@ -46,19 +46,22 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/home", true)
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/home", true)
+                    .passwordParameter("password")
+                    .usernameParameter("username")
                 .and()
                 .rememberMe()
-                .tokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1)) // defaults to 2 weeks
-                .key("somethingverysecured")  // The key is important here – it is a private value secret for the entire application and it will be used when generating the contents of the token.
+                    .tokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1)) // defaults to 2 weeks
+                    .key("somethingverysecured")  // The key is important here – it is a private value secret for the entire application and it will be used when generating the contents of the token.
+                    .rememberMeParameter("remember-me")
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "remember-me")
-                .logoutSuccessUrl("/login");
+                    .logoutUrl("/logout")
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
     }
 
     @Override
