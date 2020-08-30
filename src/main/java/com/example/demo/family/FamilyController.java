@@ -1,4 +1,4 @@
-package com.example.demo.FamilyMember;
+package com.example.demo.family;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,4 +1,4 @@
-package com.example.demo.com.example.demo.security;
+package com.example.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -47,7 +47,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails sueSmithUser = User.builder()
                 .username("susansmith")
                 .password(passwordEncoder.encode("password123"))
-                .roles("ADMIN")
+                .roles("ADMIN")  // ROLE_ADMIN
                 .build();
 
         return new InMemoryUserDetailsManager(

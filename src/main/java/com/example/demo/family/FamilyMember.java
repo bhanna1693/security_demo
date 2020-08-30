@@ -1,4 +1,4 @@
-package com.example.demo.FamilyMember;
+package com.example.demo.family;
 
 public class FamilyMember {
     private Long memberId;
