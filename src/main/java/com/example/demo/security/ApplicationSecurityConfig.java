@@ -30,7 +30,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                .antMatchers("/api/**").hasRole(MY_USER.name())
+                .antMatchers("/api/**").hasRole(USER.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -43,7 +43,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails brainSmithUser = User.builder()
                 .username("briansmith")
                 .password(passwordEncoder.encode("password"))
-                .roles(MY_USER.name())  // ROLE_USER
+                .roles(USER.name())  // ROLE_USER
                 .build();
 
         UserDetails sueSmithUser = User.builder()

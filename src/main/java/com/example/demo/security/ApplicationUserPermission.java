@@ -1,8 +1,8 @@
 package com.example.demo.security;
 
 public enum ApplicationUserPermission {
-    MY_USER_READ("my_user:read"),
-    MY_USER_WRITE("my_user:write"),
+    USER_READ("user:read"),
+    USER_WRITE("user:write"),
     FAMILY_READ("family:read"),
     FAMILY_WRITE("family:write");
 

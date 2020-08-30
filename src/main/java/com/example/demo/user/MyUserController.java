@@ -12,19 +12,18 @@ import java.util.List;
 @RequestMapping("api/v1/user")
 public class MyUserController {
     private static final List<MyUser> MY_USER_LIST = Arrays.asList(
-            new MyUser((long) 1, "Hanna"),
-            new MyUser((long) 2, "Brand"),
-            new MyUser((long) 3, "Falarski"),
-            new MyUser((long) 4, "Purucker")
+            new MyUser((long) 1, "Brian Smith"),
+            new MyUser((long) 2, "Susan Smith"),
+            new MyUser((long) 3, "Shawn Smith")
     );
 
-    @GetMapping("{myUserId}")
-    public MyUser getMyUser(@PathVariable Long myUserId) {
+    @GetMapping("{userId}")
+    public MyUser getMyUser(@PathVariable Long userId) {
         return MY_USER_LIST.stream()
-                .filter(myUser -> myUserId.equals(myUser.getMyUserId()))
+                .filter(myUser -> userId.equals(myUser.getUserId()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(
-                        "User " + myUserId + " does not exist"
+                        "User " + userId + " does not exist"
                 ));
     }
 }

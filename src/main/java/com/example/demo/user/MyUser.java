@@ -1,20 +1,20 @@
 package com.example.demo.user;
 
 public class MyUser {
-    private Long myUserId;
+    private Long userId;
     private String name;
 
-    public MyUser(Long myUserId, String name) {
-        this.myUserId = myUserId;
+    public MyUser(Long userId, String name) {
+        this.userId = userId;
         this.name = name;
     }
 
-    public Long getMyUserId() {
-        return myUserId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setMyUserId(Long myUserId) {
-        this.myUserId = myUserId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
