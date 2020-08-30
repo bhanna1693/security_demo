@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/family")
+@RequestMapping("api/v1/family")
 public class FamilyController {
     private static final List<FamilyMember> MEMBER_LIST = Arrays.asList(
             new FamilyMember((long) 1, "Brian", "Smith"),
