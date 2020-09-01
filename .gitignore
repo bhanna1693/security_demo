@@ -33,4 +33,4 @@ build/
 .vscode/
 
 
-/src/main/resources/templates/webapp-build/**
+/src/main/resources/public/**
