@@ -1,20 +1,29 @@
 package com.example.demo.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
 public class TemplateController {
+    private boolean hasLoggedIn = false;
 
-    @GetMapping("login")
+    @GetMapping("/login")
     public String getLoginView() {
-        return "login";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal()).equals("anonymousUser")) {
+            return "redirect:/";
+        } else {
+            // not logged in, send to login page.
+            return "login";
+        }
+
+
     }
 
-    @GetMapping("home")
+    @GetMapping("/index")
     public String getHomeView() {
-        return "home";
+        return "redirect:/";
     }
 }

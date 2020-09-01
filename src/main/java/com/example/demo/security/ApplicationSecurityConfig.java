@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.example.demo.security.ApplicationUserRole.*;
+import static com.example.demo.security.ApplicationUserRole.USER;
 
 @Configuration
 @EnableWebSecurity
@@ -38,8 +38,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                .antMatchers("/api/**").hasRole(USER.name())
+                .antMatchers("/**").permitAll()  // angular app resources
+                .antMatchers("/", "/css/*", "/js/*").permitAll()  // "/" allows angular app to load onInit without login
+                .antMatchers("/api/**").hasRole(USER.name())  // locks down the backend api
 //                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(FAMILY_WRITE.getPermission())
 //                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(FAMILY_WRITE.getPermission())
 //                .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(FAMILY_WRITE.getPermission())
@@ -48,22 +49,22 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/login").permitAll()
-                    .defaultSuccessUrl("/home", true)
-                    .passwordParameter("password")
-                    .usernameParameter("username")
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/index", true)
+                .passwordParameter("password")
+                .usernameParameter("username")
                 .and()
                 .rememberMe()
-                    .tokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1)) // defaults to 2 weeks
-                    .key("somethingverysecured")  // The key is important here – it is a private value secret for the entire application and it will be used when generating the contents of the token.
-                    .rememberMeParameter("remember-me")
+                .tokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1)) // defaults to 2 weeks
+                .key("somethingverysecured")  // The key is important here – it is a private value secret for the entire application and it will be used when generating the contents of the token.
+                .rememberMeParameter("remember-me")
                 .and()
                 .logout()
-                    .logoutUrl("/logout")
-                    .clearAuthentication(true)
-                    .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID", "remember-me")
-                    .logoutSuccessUrl("/login");
+                .logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
+                .logoutSuccessUrl("/login");
     }
 
     @Override
