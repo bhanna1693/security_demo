@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
 import com.example.demo.auth.ApplicationUserService;
+import com.example.demo.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.concurrent.TimeUnit;
@@ -37,34 +39,36 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //                .and()
                 .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()  // angular app resources
-                .antMatchers("/", "/css/*", "/js/*").permitAll()  // "/" allows angular app to load onInit without login
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()  // "/" allows angular app to load onInit without login
                 .antMatchers("/api/**").hasRole(USER.name())  // locks down the backend api
-//                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(FAMILY_WRITE.getPermission())
-//                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(FAMILY_WRITE.getPermission())
-//                .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(FAMILY_WRITE.getPermission())
-//                .antMatchers("/management/api/**").hasAnyRole(ADMIN.name(), ADMIN_TRAINEE.name())
                 .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/index", true)
-                .passwordParameter("password")
-                .usernameParameter("username")
-                .and()
-                .rememberMe()
-                .tokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1)) // defaults to 2 weeks
-                .key("somethingverysecured")  // The key is important here – it is a private value secret for the entire application and it will be used when generating the contents of the token.
-                .rememberMeParameter("remember-me")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "remember-me")
-                .logoutSuccessUrl("/login");
+                .authenticated();
+
+
+                /////////////  FORM LOGIN START  ////////////
+//                .formLogin()
+//                .loginPage("/login").permitAll()
+//                .defaultSuccessUrl("/index", true)
+//                .passwordParameter("password")
+//                .usernameParameter("username")
+//                .and()
+//                .rememberMe()
+//                .tokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(1)) // defaults to 2 weeks
+//                .key("somethingverysecured")  // The key is important here – it is a private value secret for the entire application and it will be used when generating the contents of the token.
+//                .rememberMeParameter("remember-me")
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .clearAuthentication(true)
+//                .invalidateHttpSession(true)
+//                .deleteCookies("JSESSIONID", "remember-me")
+//                .logoutSuccessUrl("/login");
+        //////////  FORM LOGIN FINISH  ////////////////
     }
 
     @Override
