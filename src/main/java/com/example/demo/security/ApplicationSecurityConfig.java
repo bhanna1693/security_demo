@@ -50,7 +50,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()  // angular app resources
+//                .antMatchers("/**").permitAll()  // permits angular app resources in /public (but also permits all api calls...)
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()  // "/" allows angular app to load onInit without login
                 .antMatchers("/api/**").hasRole(USER.name())  // locks down the backend api
                 .anyRequest()
