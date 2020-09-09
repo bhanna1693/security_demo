@@ -19,6 +19,9 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    const fd = new FormData();
+    fd.append('username', this.loginForm.get('username').value);
+    fd.append('password', this.loginForm.get('password').value);
     return;
   }
 
