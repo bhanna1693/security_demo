@@ -12,11 +12,15 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(environment.API_URL + '/authenticate', {username, password})
+  login(loginForm: { username: string, password: string }): Observable<any> {
+    const fd = new FormData();
+    fd.append('username', loginForm.username);
+    fd.append('password', loginForm.password);
+
+    return this.http.post<any>(environment.API_URL + '/authenticate', fd)
       .pipe(
         map((userData) => {
-          sessionStorage.setItem('username', username);
+          sessionStorage.setItem('username', loginForm.username);
           const tokenStr = 'Bearer ' + userData.token;
           sessionStorage.setItem('token', tokenStr);
           return userData;

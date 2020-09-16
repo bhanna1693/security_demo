@@ -1,5 +1,5 @@
 <section>
-  <form [formGroup]="loginForm">
+  <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
     <div class="form-group">
       <label for="username">Username</label>
       <input type="text" id="username" class="form-control" formControlName="username">
@@ -9,5 +9,7 @@
       <label for="password">Password</label>
       <input type="text" id="password" class="form-control" formControlName="password">
     </div>
+
+    <button type="submit">Login</button>
   </form>
 </section>
